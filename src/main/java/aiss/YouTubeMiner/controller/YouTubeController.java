@@ -32,11 +32,11 @@ public class YouTubeController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/channels/{id}")
-    public List<YoutubeChannel> post(@PathVariable String id) {
+    public List<Channel> post(@PathVariable String id) {
         String token = "AIzaSyC1Q7p1wV3YzryZZnFjp7Nr_cypZ2oLwDg";
         String part = "snippet,contentDetails,statistics";
         ChannelSearch channelSearch = youTubeService.getChannelWithId(token, part, id);
-        List<YoutubeChannel> channels = new ArrayList<>();
+        List<Channel> channels = new ArrayList<>();
         for (YoutubeChannel channel: channelSearch.getItems()) {
             Channel newChannel = new Channel();
             newChannel.setId(channel.getId());
@@ -79,7 +79,7 @@ public class YouTubeController {
                     newChannel.getVideos().add(vid);
                 });
             }
-            YoutubeChannel VideoChannel = restTemplate.postForObject("http://localhost:8080/videominer/channels", newChannel, YoutubeChannel.class);
+            Channel VideoChannel = restTemplate.postForObject("http://localhost:8080/videominer/channels", newChannel, Channel.class);
             channels.add(VideoChannel);
         }
         return channels;
